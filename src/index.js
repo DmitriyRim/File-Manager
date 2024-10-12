@@ -1,6 +1,6 @@
 import { stdin, stdout, chdir, cwd } from 'node:process';
 import { homedir, EOL } from 'node:os';
-import { setUpperWorkDir, setWorkDirectory } from './modules/navigation/index.js';
+import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -18,6 +18,9 @@ stdin.on('data', (data) => {
             break;
         case 'cd':
             setWorkDirectory(cliArgs[1])
+            break;
+        case 'ls': 
+            showFolderContents()
             break;
         case '.exit':
             stdin.pause();
@@ -41,6 +44,7 @@ function getUserName () {
     const args = process.argv.slice(2).find(item => item.match(/^--username=/));
     return args.split('=')[1];
 }
+
 function getCurrentPath () {
     return `${EOL}You are currently in ${cwd()}${EOL}>`;
 }
