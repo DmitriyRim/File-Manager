@@ -1,10 +1,6 @@
 import { stdin, stdout, chdir, cwd } from 'node:process';
 import { homedir, EOL } from 'node:os';
-import { setUpperWorkDir } from './modules/navigation/index.js';
-
-// Метод process.chdir() изменяет текущий рабочий каталог процесса Node.js или выдает исключение, 
-// если выполнить это не удается (например, если указанный directory не существует).
-// Метод process.cwd() возвращает текущий рабочий каталог процесса Node.js .
+import { setUpperWorkDir, setWorkDirectory } from './modules/navigation/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -19,6 +15,9 @@ stdin.on('data', (data) => {
     switch (cliArgs[0]) {
         case 'up':
             setUpperWorkDir();
+            break;
+        case 'cd':
+            setWorkDirectory(cliArgs[1])
             break;
         case '.exit':
             stdin.pause();
