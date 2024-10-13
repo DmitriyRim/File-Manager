@@ -1,6 +1,8 @@
 import { stdin, stdout, chdir, cwd } from 'node:process';
 import { homedir, EOL } from 'node:os';
 import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
+import { readFile } from './modules/fileOperation/index.js';
+import { existsSync } from 'node:fs';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -9,7 +11,7 @@ const pathToWorkingDirector = homedir();
 
 chdir(pathToWorkingDirector);
 stdout.write(`${textWelcome}${getCurrentPath()}`);
-stdin.on('data', (data) => {
+stdin.on('data', async (data) => {
     const cliArgs = data.toString().slice(0, -2).split(' ');
 
     switch (cliArgs[0]) {
@@ -21,6 +23,9 @@ stdin.on('data', (data) => {
             break;
         case 'ls': 
             showFolderContents()
+            break;
+        case 'cat': 
+            await readFile(cliArgs[1])
             break;
         case '.exit':
             stdin.pause();
