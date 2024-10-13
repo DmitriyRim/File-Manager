@@ -1,7 +1,7 @@
 import { stdin, stdout, chdir, cwd } from 'node:process';
 import { homedir, EOL } from 'node:os';
 import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
-import { readFile } from './modules/fileOperation/index.js';
+import { createFile, readFile } from './modules/fileOperation/index.js';
 import { existsSync } from 'node:fs';
 
 const userName = getUserName();
@@ -25,7 +25,10 @@ stdin.on('data', async (data) => {
             showFolderContents()
             break;
         case 'cat': 
-            await readFile(cliArgs[1])
+            readFile(cliArgs[1])
+            break;
+        case 'add':
+            createFile(cliArgs[1])
             break;
         case '.exit':
             stdin.pause();

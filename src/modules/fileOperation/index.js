@@ -1,5 +1,7 @@
 import { existsSync, createReadStream } from 'node:fs';
-import { stdout } from 'node:process';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { cwd, stdout } from 'node:process';
 
 async function readFile(path) {
     try {
@@ -14,6 +16,16 @@ async function readFile(path) {
     }
 }
 
+async function createFile(fileName){
+    const currentPath = cwd();
+    try {
+        await writeFile(join(currentPath, fileName.trim()), '');
+    } catch (error) {
+        console.log('Operation failed');
+    }
+}
+
 export {
-    readFile
+    readFile,
+    createFile
 }
