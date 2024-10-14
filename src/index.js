@@ -1,11 +1,7 @@
 import { stdin, stdout, chdir } from 'node:process';
 import { homedir } from 'node:os';
-import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
-import { copyFile, createFile, deleteFile, moveFile, readFile, renameFiles } from './modules/fileOperation/index.js';
-import { getSystemInfo } from './modules/system/index.js';
 import { getUserName, getCurrentPath } from './utils/index.js';
-import { calculateHash } from './modules/hash/index.js';
-import { compress, decompress } from './modules/zip/index.js';
+import { switchComand } from './modules/switchСliСommands/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -14,56 +10,10 @@ const pathToWorkingDirector = homedir();
 
 chdir(pathToWorkingDirector);
 stdout.write(`${textWelcome}${getCurrentPath()}`);
-stdin.on('data', async (data) => {
+stdin.on('data', (data) => {
     const cliArgs = data.toString().slice(0, -2).split(' ');
 
-    switch (cliArgs[0]) {
-        case 'up':
-            setUpperWorkDir();
-            break;
-        case 'cd':
-            setWorkDirectory(cliArgs[1])
-            break;
-        case 'ls': 
-            showFolderContents()
-            break;
-        case 'cat': 
-            readFile(cliArgs[1])
-            break;
-        case 'add':
-            createFile(cliArgs[1])
-            break;
-        case 'rn':
-            renameFiles(cliArgs[1], cliArgs[2])
-            break;
-        case 'cp':
-            copyFile(cliArgs[1], cliArgs[2])
-            break;
-        case 'mv':
-            moveFile(cliArgs[1], cliArgs[2])
-            break;
-        case 'rm':
-            deleteFile(cliArgs[1])
-            break;
-        case 'os':
-            getSystemInfo(cliArgs[1])
-            break;
-        case 'hash':
-            calculateHash(cliArgs[1])
-            break;
-        case 'compress':
-            compress(cliArgs[1], cliArgs[2])
-            break;
-        case 'decompress':
-            decompress(cliArgs[1], cliArgs[2])
-            break;
-        case '.exit':
-            stdin.pause();
-            return;
-        default:
-            console.log('Invalid input')
-            break;
-    }
+    switchComand(cliArgs);
     stdout.write(getCurrentPath());
 })
 
