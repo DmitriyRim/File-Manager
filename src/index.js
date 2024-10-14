@@ -5,6 +5,7 @@ import { copyFile, createFile, deleteFile, moveFile, readFile, renameFiles } fro
 import { getSystemInfo } from './modules/system/index.js';
 import { getUserName, getCurrentPath } from './utils/index.js';
 import { calculateHash } from './modules/hash/index.js';
+import { compress, decompress } from './modules/zip/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -49,6 +50,12 @@ stdin.on('data', async (data) => {
             break;
         case 'hash':
             calculateHash(cliArgs[1])
+            break;
+        case 'compress':
+            compress(cliArgs[1], cliArgs[2])
+            break;
+        case 'decompress':
+            decompress(cliArgs[1], cliArgs[2])
             break;
         case '.exit':
             stdin.pause();
