@@ -4,6 +4,7 @@ import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules
 import { copyFile, createFile, deleteFile, moveFile, readFile, renameFiles } from './modules/fileOperation/index.js';
 import { getSystemInfo } from './modules/system/index.js';
 import { getUserName, getCurrentPath } from './utils/index.js';
+import { calculateHash } from './modules/hash/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -45,6 +46,9 @@ stdin.on('data', async (data) => {
             break;
         case 'os':
             getSystemInfo(cliArgs[1])
+            break;
+        case 'hash':
+            calculateHash(cliArgs[1])
             break;
         case '.exit':
             stdin.pause();
