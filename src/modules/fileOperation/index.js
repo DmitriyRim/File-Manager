@@ -1,4 +1,4 @@
-import { existsSync, createReadStream } from 'node:fs';
+import { existsSync, createReadStream, createWriteStream } from 'node:fs';
 import { rename, writeFile } from 'node:fs/promises';
 import { join, parse } from 'node:path';
 import { cwd, stdout } from 'node:process';
@@ -11,8 +11,8 @@ async function readFile(path) {
     
         const readStream = createReadStream(path, { encoding: 'utf8'});
         readStream.pipe(stdout);
-    } catch(err) {
-        console.log(err.message)
+    } catch(error) {
+        console.log(error.message)
     }
 }
 
@@ -33,8 +33,25 @@ async function renameFiles(pathToFile, newFileName){
     }
 }
 
+async function copyFile(pathToFile, pathToNewDirectory){
+    try {
+        if (!existsSync(pathToFile) && !existsSync(pathToNewDirectory)){
+            throw Error('Operation failed')
+        }
+
+        const fileName = parse(pathToFile).base;
+        const input = new createReadStream(pathToFile, {encoding: 'utf-8'});
+        const output = new createWriteStream(join(pathToNewDirectory, fileName));
+    
+        await input.pipe(output);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 export {
     readFile,
     createFile,
-    renameFiles
+    renameFiles,
+    copyFile
 }
