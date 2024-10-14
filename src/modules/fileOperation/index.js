@@ -66,10 +66,22 @@ async function moveFile(pathToFile, pathToNewDirectory){
     }
 }
 
+async function deleteFile(pathToFile){
+    try {
+        if (!existsSync(pathToFile)){
+            throw Error('Operation failed')
+        }
+        await rm(pathToFile);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 export {
     readFile,
     createFile,
     renameFiles,
     copyFile,
-    moveFile
+    moveFile,
+    deleteFile
 }
