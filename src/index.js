@@ -1,7 +1,7 @@
 import { stdin, stdout, chdir, cwd } from 'node:process';
 import { homedir, EOL } from 'node:os';
 import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
-import { copyFile, createFile, readFile, renameFiles } from './modules/fileOperation/index.js';
+import { copyFile, createFile, moveFile, readFile, renameFiles } from './modules/fileOperation/index.js';
 import { existsSync } from 'node:fs';
 
 const userName = getUserName();
@@ -35,6 +35,9 @@ stdin.on('data', async (data) => {
             break;
         case 'cp':
             copyFile(cliArgs[1], cliArgs[2])
+            break;
+        case 'mv':
+            moveFile(cliArgs[1], cliArgs[2])
             break;
         case '.exit':
             stdin.pause();
