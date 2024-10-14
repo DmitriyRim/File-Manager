@@ -1,8 +1,9 @@
-import { stdin, stdout, chdir, cwd } from 'node:process';
-import { homedir, EOL } from 'node:os';
+import { stdin, stdout, chdir } from 'node:process';
+import { homedir } from 'node:os';
 import { setUpperWorkDir, setWorkDirectory, showFolderContents } from './modules/navigation/index.js';
 import { copyFile, createFile, deleteFile, moveFile, readFile, renameFiles } from './modules/fileOperation/index.js';
-import { existsSync } from 'node:fs';
+import { getSystemInfo } from './modules/system/index.js';
+import { getUserName, getCurrentPath } from './utils/index.js';
 
 const userName = getUserName();
 const textWelcome = `Welcome to the File Manager, ${userName}!\n`;
@@ -42,6 +43,9 @@ stdin.on('data', async (data) => {
         case 'rm':
             deleteFile(cliArgs[1])
             break;
+        case 'os':
+            getSystemInfo(cliArgs[1])
+            break;
         case '.exit':
             stdin.pause();
             return;
@@ -58,13 +62,3 @@ process.on('SIGINT', () => {
 stdin.on('pause', () => {
     console.log(textExit);
 })
-
-
-function getUserName () {
-    const args = process.argv.slice(2).find(item => item.match(/^--username=/));
-    return args.split('=')[1];
-}
-
-function getCurrentPath () {
-    return `${EOL}You are currently in ${cwd()}${EOL}>`;
-}
